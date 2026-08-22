@@ -1,15 +1,28 @@
-# Raw generations and review copies stay OUT of the deploy folder, and out of git.
+# Review and inspection output. Raw generations are kept on purpose (see below),
+# because recreating them costs Higgsfield credits. Everything here is outside
+# the deploy folder, so none of it can ship.
+
+# throwaway inspection artifacts
 review/shots/
 review/test/
 review/audit/
-review/hero-raw.mp4
-review/start-frame.png
 review/frame-*.jpg
-review/verify-*.jpg
+review/lf-*.jpg
+review/lf-yavg.txt
 review/yavg.txt
+review/verify-*.jpg
+review/ground-raw.jpg
 
 # never ship the zip
 *.zip
 
 .DS_Store
 Thumbs.db
+
+# Deliberately tracked, do not add these to the ignore list:
+#   review/design-package.md            the build's input document
+#   review/hero-logo-raw.mp4            the raw hero generation (54 credits)
+#   review/hero-scrub-braid-backup.mp4  the earlier approved hero, kept as a revert option
+#   review/logo-start-frame.png         the start frame (2 credits)
+#   review/logo-end-frame.png           the locally composited logo end frame
+#   review/mark.png                     the brand mark source used to build it
