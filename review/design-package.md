@@ -2,6 +2,8 @@
 
 Tier 1, single journey. Written before generation. Every line of copy here ships verbatim.
 
+**Revision, hero replaced.** The first hero was an abstract braid of light. It shipped and passed every gate, and is kept at `review/hero-scrub-braid-backup.mp4`. It was then replaced at the client's request with a literal brand film: a glowing dumbbell and a glowing leaf travel toward each other and forge into the Physiqly mark. The final frame is the real logo PNG, composited locally and handed to the model as a locked end frame, so the mark is never drawn by a model. The premise below is unchanged, because both films argue the same thing.
+
 ---
 
 ## 1. The brand premise
@@ -53,22 +55,24 @@ Sora is Physiqly's real wordmark face, so the site inherits the product's voice 
 
 ## 4. The band map
 
-Hero height 400vh. Ranges are starting points, validated by the flick test.
+Hero height 600vh (raised from 400vh so four beats each get a plateau in the 80 to 130vh band). Ranges below are the shipped values, validated by the flick test.
 
 | Band | Range | Footage moment | Copy (verbatim) | Entrance |
 |---|---|---|---|---|
-| 1 | 0.00 to 0.20 | Embers drift apart in a slow descent, unresolved, scattered across the lower frame | "Workouts here. Meals there. Progress in a spreadsheet." | Scatter (characters fly in from seeded offsets, echoing the scattered embers) |
-| 2 | 0.24 to 0.46 | The descent continues, the drifting motes begin to gather toward two separate lanes | "Five tools to coach one person." | Word-punch with overshoot on "Five" |
-| 3 | 0.50 to 0.72 | The two strands run parallel, then cross and begin to interleave | "Physiqly runs all of it on one thread." | Weave (characters arrive alternating from above and below, echoing the braid) |
-| 4 | 0.78 to 1.00 | The braid resolves into one calm vertical column of warm light, at rest, centered | Logo lockup, then "Coach the person. Not the paperwork." then the CTA row | Word-by-word rise into a staged settle (headline, then subline, then CTA) |
+| 1 | 0.00 to 0.22 | The dumbbell and the leaf hang far apart in drifting haze, unconnected | "Workouts here. Meals there. Progress in a spreadsheet." | Scatter (characters fly in from seeded offsets, echoing the scattered embers) |
+| 2 | 0.26 to 0.48 | The two shapes turn and begin travelling toward each other, embers trailing behind them | "Five tools to coach one person." | Word-punch with overshoot on "Five" |
+| 3 | 0.52 to 0.74 | The dumbbell and the leaf meet and forge into the mark, glowing molten | "Physiqly runs all of it in one place." | Weave (characters arrive alternating from above and below, echoing the two halves joining) |
+| 4 | 0.78 to 1.00 | The mark has cooled into flat brand orange and sits still at frame centre, embers settling | "Coach the person. Not the paperwork." then the CTA row | Word-by-word rise into a staged settle (headline, then CTA) |
 
-Bands 1 to 3 sit in the frame's calm upper third. Band 4 converges to center over the resting column. Band 1 skips the opacity ease-in and gets the one-time load ramp so the hero opens with words already assembled. Band 4 skips the ease-out.
+Bands 1 to 3 sit in the frame's calm upper third. **Band 4 is anchored to the lower third, not centred**, because the brand mark now occupies frame centre in the footage; centring the settle text would put the headline on top of the logo. The settle's own logo image and subline were removed for the same reason: the footage carries the mark, and repeating it read as two logos. Band 1 skips the opacity ease-in and gets the one-time load ramp so the hero opens with words already assembled. Band 4 skips the ease-out.
 
 ---
 
 ## 5. The static-hero copy block
 
 For phones, portrait tablets, coarse-pointer portrait, landscape phones and reduced motion. Composed over the ending frame.
+
+The ending frame carries the brand mark, so it is the static hero's image and there is no separate logo lockup. The scrim stays clear across the mark's band so the brand orange keeps its saturation, then ramps hard below it to carry the words.
 
 - **Headline:** Coach the person. Not the paperwork.
 - **Subline:** Physiqly puts the plan, the food, the progress and the messages for every client in one app.

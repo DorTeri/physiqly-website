@@ -186,26 +186,23 @@ p{margin:0}
   font-size:clamp(1.9rem,5.4vw,4rem);line-height:1.08;letter-spacing:-.025em;
   max-width:19ch;margin:0 auto;
 }
-/* the settle */
-.band-settle{top:50%;transform:translateY(-50%);text-align:center}
+/* The settle. The brand mark lives in the footage at frame centre, so the words
+   sit below it rather than on top of it. */
+.band-settle{top:auto;bottom:7vh;text-align:center}
 .band-settle::before{inset:-34% -16%;
   background:radial-gradient(ellipse 56% 52% at 50% 50%,
     rgba(5,5,10,.8) 0%,rgba(5,5,10,.6) 55%,rgba(5,5,10,0) 82%)}
-.settle-mark{width:clamp(190px,26vw,290px);margin:0 auto 26px;opacity:var(--kb,0)}
 .band-settle .line{
   font-family:var(--font-display);font-weight:700;
-  font-size:clamp(1.75rem,4.6vw,3.4rem);line-height:1.08;letter-spacing:-.025em;
+  font-size:clamp(1.6rem,4vw,2.9rem);line-height:1.08;letter-spacing:-.025em;
   max-width:17ch;margin:0 auto;
 }
-.settle-sub{
-  margin:20px auto 0;max-width:44ch;color:var(--text-secondary);
-  font-size:clamp(.98rem,1.5vw,1.12rem);
-  opacity:var(--ks,0);transform:translateY(calc((1 - var(--ks,0))*12px));
-}
 .settle-cta{
-  margin-top:30px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+  margin-top:24px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
   opacity:var(--kb,0);transform:translateY(calc((1 - var(--kb,0))*14px));
 }
+/* a shallow desktop window has no room under the mark for a two-line headline */
+@media (max-height:620px){.band-settle{bottom:4vh}.band-settle .line{font-size:1.5rem}}
 
 /* word / character split primitives */
 .w{display:inline-block;white-space:pre}
@@ -255,13 +252,22 @@ p{margin:0}
 /* ============================================================
    STATIC HERO - five gates, matched exactly in JS
    ============================================================ */
+/* The ending frame already carries the brand mark, so it is the hero image and
+   the words sit under it. No separate logo, or the mark appears twice. */
 .static-hero{display:none;position:relative;min-height:100svh;z-index:1;
-  align-items:center;justify-content:center;text-align:center;padding:110px var(--gut) 70px;overflow:hidden}
-.static-hero .bgimg{position:absolute;inset:0;background-size:cover;background-position:center 62%}
+  align-items:flex-end;justify-content:center;text-align:center;
+  padding:96px var(--gut) 8vh;overflow:hidden}
+.static-hero .bgimg{position:absolute;inset:0;background-size:cover;background-position:center 26%}
+/* stays clear across the mark's band so the brand orange keeps its punch,
+   then ramps hard below it to carry the headline */
 .static-hero .bgscrim{position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(6,6,11,.86) 0%,rgba(6,6,11,.5) 38%,rgba(6,6,11,.9) 100%)}
+  background:linear-gradient(180deg,
+    rgba(6,6,11,.5) 0%,
+    rgba(6,6,11,.12) 20%,
+    rgba(6,6,11,.12) 52%,
+    rgba(6,6,11,.9) 70%,
+    rgba(6,6,11,.97) 100%)}
 .static-inner{position:relative;max-width:660px;text-shadow:var(--tshadow)}
-.static-inner .mark{width:min(250px,64vw);margin:0 auto 24px}
 .static-inner h1{font-size:clamp(2rem,8.4vw,2.9rem);letter-spacing:-.03em}
 .static-inner p{margin-top:18px;color:var(--text-secondary);font-size:1.04rem}
 .static-inner .btn{text-shadow:none}
@@ -627,13 +633,11 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     </div>
 
     <div class="band band-top" data-band="0.52,0.74" data-entrance="weave" id="b3">
-      <p class="line" data-split="char">Physiqly runs all of it on one thread.</p>
+      <p class="line" data-split="char">Physiqly runs all of it in one place.</p>
     </div>
 
     <div class="band band-settle" data-band="0.78,1" data-entrance="rise" id="b4">
-      <img class="settle-mark" src="assets/logo-full.webp" alt="Physiqly" width="290" height="53">
       <p class="line" data-split="word">Coach the person. Not the paperwork.</p>
-      <p class="settle-sub">Physiqly puts the plan, the food, the progress and the messages for every client in one app.</p>
       <div class="settle-cta">
         <a class="btn btn-primary" href="#demo">Book a demo</a>
         <a class="btn btn-ghost" href="#digest">See it working</a>
@@ -652,7 +656,6 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
   <div class="bgimg" id="static-bg" aria-hidden="true"></div>
   <div class="bgscrim" aria-hidden="true"></div>
   <div class="static-inner">
-    <img class="mark" src="assets/logo-full.webp" alt="Physiqly" width="250" height="46">
     <h1>Coach the person. Not the paperwork.</h1>
     <p>Physiqly puts the plan, the food, the progress and the messages for every client in one app.</p>
     <div class="static-cta">
@@ -903,9 +906,10 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
    CONSTANTS
    ============================================================ */
 var VIDEO_URL   = 'assets/hero-scrub.mp4';
-var VIDEO_BYTES = 4654232;                 /* real byte size, the Content-Length fallback */
+var VIDEO_BYTES = 3031104;                 /* real byte size, the Content-Length fallback */
 var POSTER_URL  = 'assets/hero-poster.jpg';
 var ENDING_URL  = 'assets/hero-ending.jpg';
+var ATMOS_URL   = 'assets/hero-atmos.jpg';
 
 var GATES = [
   '(max-width: 720px)',
@@ -927,7 +931,7 @@ var smoothstep = function(p,e0,e1){ var t = clamp((p-e0)/(e1-e0),0,1); return t*
 /* ============================================================
    BACKGROUND IMAGES (set from JS so gated visitors never fetch them twice)
    ============================================================ */
-document.getElementById('cta-bg').style.backgroundImage    = "url('"+ENDING_URL+"')";
+document.getElementById('cta-bg').style.backgroundImage    = "url('"+ATMOS_URL+"')";
 document.getElementById('static-bg').style.backgroundImage = "url('"+ENDING_URL+"')";
 
 /* ============================================================
