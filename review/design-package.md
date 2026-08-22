@@ -91,33 +91,42 @@ Every section funnels to `#demo`. No two adjacent sections share a skeleton.
 - Body: "On the left, the week you actually run. On the right, the same week in Physiqly. Press and hold."
 - Mechanics: two vertical strands of scattered labels (Workouts, Meals, Weigh-ins, Messages, Payments) sit apart. Holding draws them together into one thread; on completion the merged labels light in sequence and a single line resolves: "One client. One thread." Releasing early eases the strands back apart, never snapping. Reduced motion shows the completed state with no hold required.
 
-**6.2 You see who needs you before they go quiet.** Layout: text left, single phone right.
+**6.2 The AI Coach.** Layout: phone left, a control list and a guard strip right. Deliberately not the mirror of 6.3: the right column is a list of controls, not prose with dot bullets, and the section sits on its own gradient band.
+- Kicker: `AI COACH`
+- Headline: "It answers at eleven at night. In your words."
+- Body: "You answer sixteen situations once, the way you would actually reply. After that it handles the ones you let it handle, using each client's real numbers: what they have left to eat today, which session is on, where their weight is going."
+- The three controls, using the product's own labels: "Answer it" / "Routine questions get handled and you never see them." — "Answer, but tell me" / "It replies, and the conversation lands in your inbox." — "Always ask me first" / "It waits for you. Nothing goes out in your name."
+- The guard strip: "Pain and injuries always come to you." / "If a client mentions pain, an injury or dizziness, your AI never gives advice. It hands the conversation straight over and flags it, and that cannot be switched off."
+- Screenshot: `ai-coach.webp`, the setup wizard's scenario step, which shows the guarantee and the three choices in one frame.
+- Placed first among the features at the client's request, and it earns the spot: it is the newest capability and the clearest reason to choose Physiqly over a cheaper tool.
+
+**6.3 You see who needs you before they go quiet.** Layout: text left, single phone right.
 - Kicker: `TODAY'S DIGEST`
 - Headline: "You see who needs you before they go quiet."
 - Body: "Physiqly reads the week for you. Missed sessions, meals nobody logged, weight that stopped moving, weigh-ins going stale. It is on one screen the moment you open the app."
 - Bullets: "Missed workouts, surfaced the same day." / "Nutrition that quietly stopped." / "Weight trends that flattened out." / "The client who needs a message today."
 - Screenshot: `digest.png`
 
-**6.3 Ten clients. One screen.** Layout: wide, screenshot leading, copy in a narrow column beneath. Deliberately not the mirror of 6.2.
+**6.4 Ten clients. One screen.** Layout: wide, screenshot leading, copy in a narrow column beneath. Deliberately not the mirror of 6.3.
 - Kicker: `THE ROSTER`
 - Headline: "Ten clients. One screen."
 - Body: "Search, filter by goal, see every outstanding alert without opening a single profile. When your roster grows, the screen does not."
 - Screenshot: `roster.png`
 
-**6.4 The plan and the food in the same place.** Layout: two phones side by side, copy above them, centered.
+**6.5 The plan and the food in the same place.** Layout: two phones side by side, copy above them, centered.
 - Kicker: `PLAN AND NUTRITION`
 - Headline: "The plan and the food in the same place."
 - Body: "Set the macros, build the day, and watch it land. Rest days carry their own carb target. Your client sees exactly what you set, meal by meal."
 - Screenshots: `plan-meals.png`, `client-meals.png`
 - Caption under left: "What you set." Caption under right: "What they see."
 
-**6.5 What your client actually opens.** Layout: offset diptych, one phone raised above the other, copy in the gutter.
+**6.6 What your client actually opens.** Layout: offset diptych, one phone raised above the other, copy in the gutter.
 - Kicker: `THE CLIENT SIDE`
 - Headline: "What your client actually opens."
 - Body: "Their session is waiting when they wake up. Last week's weights are already in the field. Nobody has to be taught how to use it, which is the only reason a client sticks with an app at all."
 - Screenshots: `client-home.png`, `client-training.png`
 
-**6.6 It already knows the work.** Layout: three-across strip, equal treatment, each with its own screenshot.
+**6.7 It already knows the work.** Layout: three-across strip, equal treatment, each with its own screenshot.
 - Kicker: `THE LIBRARIES`
 - Headline: "It already knows the work."
 - Three equal cards (every parallel element gets an image):
@@ -125,7 +134,7 @@ Every section funnels to `#demo`. No two adjacent sections share a skeleton.
   - "Meals" / "Macros per 100g, client submissions waiting for your approval." / `meals-lib.png`
   - "Discover" / "Recipes and sessions your clients can pull straight into their week." / `discover.png`
 
-**6.7 The questions trainers actually ask.** Layout: single column accordion, mono numbering, no images.
+**6.8 The questions trainers actually ask.** Layout: single column accordion, mono numbering, no images.
 - Kicker: `STRAIGHT ANSWERS`
 - Headline: "The questions trainers actually ask."
 - FAQ, answering the objections found in research:
@@ -140,7 +149,7 @@ Every section funnels to `#demo`. No two adjacent sections share a skeleton.
   - Q: "What happens to the messages I get at eleven at night?"
     A: "Clients send structured requests instead of open chat, so a question about swapping an exercise arrives as that, and it waits in one place instead of your personal phone."
 
-**6.8 The call to action.** Layout: centered, the braid resolving behind it, the ending frame as the ground.
+**6.9 The call to action.** Layout: centered, the braid resolving behind it, the ending frame as the ground.
 - Kicker: `SEE IT ON YOUR OWN ROSTER`
 - Headline: "Bring one client. We will set them up live."
 - Body: "Twenty minutes, screen shared, your actual training style. If it does not fit how you coach, you will know inside ten."
@@ -152,7 +161,7 @@ Every section funnels to `#demo`. No two adjacent sections share a skeleton.
   - Success state: "Booked. Check your email in the next few minutes and pick a time that suits you."
   - Handling on this static site: **decided with the user before the build** (mailto or a free form service). Whichever is chosen, the success state must tell the truth about where the message went.
 
-**6.9 Footer.** Nav, the mark, and the honest line. Physiqly is a real product, so there is no fictional-brand disclosure. The screenshots are real screens from the app, populated with demo accounts, and the footer says so in one plain line: "Screens shown are the real app, filled with demo clients."
+**6.10 Footer.** Nav, the mark, and the honest line. Physiqly is a real product, so there is no fictional-brand disclosure. The screenshots are real screens from the app, populated with demo accounts, and the footer says so in one plain line: "Screens shown are the real app, filled with demo clients."
 
 ---
 
