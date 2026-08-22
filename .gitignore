@@ -1,0 +1,15 @@
+# Raw generations and review copies stay OUT of the deploy folder, and out of git.
+review/shots/
+review/test/
+review/audit/
+review/hero-raw.mp4
+review/start-frame.png
+review/frame-*.jpg
+review/verify-*.jpg
+review/yavg.txt
+
+# never ship the zip
+*.zip
+
+.DS_Store
+Thumbs.db
