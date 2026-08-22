@@ -12,6 +12,7 @@ review/lf-yavg.txt
 review/yavg.txt
 review/verify-*.jpg
 review/ground-raw.jpg
+review/logo-end-frame.jpg
 
 # never ship the zip
 *.zip
@@ -26,3 +27,5 @@ Thumbs.db
 #   review/logo-start-frame.png         the start frame (2 credits)
 #   review/logo-end-frame.png           the locally composited logo end frame
 #   review/mark.png                     the brand mark source used to build it
+#   review/hero-raw.mp4                 the braid hero's raw generation (54 credits)
+#   review/start-frame.png              the braid hero's start frame (2 credits)
