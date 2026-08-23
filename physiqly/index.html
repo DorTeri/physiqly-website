@@ -163,6 +163,7 @@ p{margin:0}
   padding:0 var(--gut);
   opacity:0;pointer-events:none;
   text-shadow:var(--tshadow);
+  z-index:3;            /* words always win over the phone reveal below them */
 }
 /* Per-band scrim. Wide enough to cover the FULL text width, and the peak alpha
    is tuned per band against that band's own worst frame, never the average. */
@@ -176,27 +177,66 @@ p{margin:0}
     rgba(5,5,10,var(--sb,.66)) 55%,
     rgba(5,5,10,0) 82%);
 }
-/* band 1 opens over the frame's brightest haze, so it carries the deepest scrim */
-#b1::before{--sa:.94;--sb:.78}
+/* band 1 sits beside the glowing icons, so its lanes carry the deepest scrim */
+#b1 .lane::before{--sa:.9;--sb:.7}
 .band .btn{text-shadow:none}
-/* bands 1..3 live in the calm upper third; the action lane below stays clear */
-.band-top{top:16vh;text-align:center}
-.band-top .line{
-  font-family:var(--font-display);font-weight:700;
-  font-size:clamp(1.9rem,5.4vw,4rem);line-height:1.08;letter-spacing:-.025em;
-  max-width:19ch;margin:0 auto;
+/* ---- SIDE LANES ----------------------------------------------------------
+   The footage keeps its action in the centre column: icons flank it at the
+   start, the two currents braid straight down the middle, the phone forms
+   there at the end. So the words live in the dark margins to either side of
+   that column and never sit on top of it. Each lane is placed independently,
+   which is what lets one line arrive on the left and the next answer it on
+   the right, at its own height, instead of a stack down the middle. */
+.band-lanes{top:0;bottom:0;padding:0}
+.band-lanes::before{display:none}   /* lanes carry their own scrims instead */
+/* shrink-to-fit so a two-word line gets a small scrim instead of one sized to
+   an empty column; long lines still wrap at the max-width */
+.lane{position:absolute;width:max-content;max-width:min(24ch,32vw)}
+/* The two-sided scrim: one ellipse per lane, the centre lane left completely
+   alone so the braid keeps its brightness. Never one scrim stretched across. */
+.lane::before{
+  content:"";position:absolute;inset:-52% -26%;pointer-events:none;
+  opacity:calc(.25 + .75*var(--k,1));
+  background:radial-gradient(ellipse 60% 52% at 50% 50%,
+    rgba(5,5,10,var(--sa,.84)) 0%,
+    rgba(5,5,10,var(--sb,.6)) 52%,
+    rgba(5,5,10,0) 80%);
 }
-/* the hook: three short lines, left / right / centre, each entering from its
-   own side so the words echo the footage's two strands closing to one */
-.hook{max-width:30ch;margin:0 auto}
-.hook .line{max-width:none;margin:0}
-.hook .line-l{text-align:left}
-.hook .line-r{text-align:right;margin-top:.12em}
-.hook .line-c{text-align:center;margin-top:.55em}
-.hook .line{font-size:clamp(1.5rem,4.3vw,3.05rem)}
-.hook .line-c{font-size:clamp(1.7rem,4.9vw,3.4rem)}
-/* band 2, off to the side rather than dead centre */
-.band-top .line-side{text-align:right;margin:0 0 0 auto}
+/* text paints after the scrim: both are z-index auto, so DOM order decides */
+.lane .line{position:relative}
+.lane-l{left:var(--gut);text-align:left}
+.lane-r{right:var(--gut);text-align:right}
+.lane .line{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(1.5rem,3.3vw,2.7rem);line-height:1.1;letter-spacing:-.025em;
+  margin:0;
+}
+/* Each beat sits at its own height, and the answering line sits lower than the
+   line it answers, so the eye travels instead of resting in one fixed spot. */
+#b1 .lane-l{top:19vh}
+#b1 .lane-r{top:37vh}
+#b2 .lane-r{top:17vh}
+#b2 .lane-l{top:39vh}
+/* The convergence beat: the two sides have become one, so this is the line
+   that earns the centre. It sits above the braid's brightest stretch. */
+.band-mid{top:21vh;text-align:center}
+.band-mid .line{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(1.7rem,4.4vw,3.2rem);line-height:1.08;letter-spacing:-.025em;
+  max-width:18ch;margin:0 auto;
+}
+@media (max-width:720px),
+       (orientation:portrait) and (max-width:1024px),
+       (orientation:portrait) and (pointer:coarse){
+  /* portrait has no room for two columns abreast, so the lanes keep their
+     left/right identity but take more width, staggered down the frame */
+  .lane{max-width:min(20ch,74vw)}
+  #b1 .lane-l{top:17vh}
+  #b1 .lane-r{top:34vh}
+  #b2 .lane-r{top:16vh}
+  #b2 .lane-l{top:35vh}
+  .band-mid{top:19vh}
+}
 /* The settle. The brand mark lives in the footage at frame centre, so the words
    sit below it rather than on top of it. */
 .band-settle{top:auto;bottom:7vh;text-align:center}
@@ -219,17 +259,29 @@ p{margin:0}
    footage's own glow resolves into a phone shape. This is real DOM text, not
    the model's approximation of small lettering, so it is always crisp. Reuses
    the .phone frame styled for the lower sections. */
+/* Sized by HEIGHT, not width, and deliberately shorter than the footage's own
+   phone: the video puts the phone between 16vh and 68vh, and the settle
+   headline starts around 71vh, so capping the overlay at 50vh from 16vh
+   leaves a clear gap under it no matter how the text wraps. Sizing by width
+   was the bug: a wide viewport made it tall enough to reach the headline. */
 .hero-phone-reveal{
-  position:absolute;left:50%;top:15vh;transform:translateX(-50%);
-  width:min(230px,24vw);pointer-events:none;z-index:2;opacity:0;
+  position:absolute;left:50%;top:16vh;transform:translateX(-50%);
+  /* aspect-ratio drives the width from the height. A chain of width:auto with
+     percentage heights collapses to a few px instead, which is what a
+     height-first layout does without this. 574x1228 is the screenshot plus
+     its 7px bezel on each side. */
+  height:50vh;aspect-ratio:574/1228;
+  pointer-events:none;z-index:2;opacity:0;
   filter:drop-shadow(0 0 44px rgba(255,170,110,.32));
 }
-.hero-phone-reveal .phone{width:100%;max-width:none}
-@media (max-height:620px){.hero-phone-reveal{top:11vh;width:min(180px,20vw)}}
+.hero-phone-reveal .phone{width:100%;height:100%;max-width:none;padding:7px}
+.hero-phone-reveal .phone img{width:100%;height:100%;object-fit:cover;border-radius:26px}
+@media (max-height:620px){.hero-phone-reveal{top:12vh;height:42vh}}
 @media (max-width:720px),
        (orientation:portrait) and (max-width:1024px),
        (orientation:portrait) and (pointer:coarse){
-  .hero-phone-reveal{top:12vh;width:min(230px,48vw)}
+  /* portrait footage lands the phone between 14vh and 64vh */
+  .hero-phone-reveal{top:14vh;height:46vh}
 }
 
 /* word / character split primitives */
@@ -703,19 +755,25 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <div class="scrim" aria-hidden="true"></div>
     <div class="scrim-top" aria-hidden="true"></div>
 
-    <div class="band band-top" data-band="0,0.22" id="b1">
-      <div class="hook">
-        <p class="line line-l" data-split="word" data-entrance="slide-l">Workouts here.</p>
-        <p class="line line-r" data-split="word" data-entrance="slide-r">Meals there.</p>
-        <p class="line line-c" data-split="char" data-entrance="converge">Progress in a spreadsheet.</p>
+    <div class="band band-lanes" data-band="0,0.22" data-ramp="0.05" id="b1">
+      <div class="lane lane-l">
+        <p class="line" data-split="word" data-entrance="slide-l" data-delay="0">One client.</p>
+      </div>
+      <div class="lane lane-r">
+        <p class="line" data-split="word" data-entrance="slide-r" data-delay="0.4">Five apps.</p>
       </div>
     </div>
 
-    <div class="band band-top" data-band="0.26,0.48" id="b2">
-      <p class="line line-side" data-split="word" data-entrance="slide-r">Five tools to coach one person.</p>
+    <div class="band band-lanes" data-band="0.26,0.48" data-ramp="0.05" id="b2">
+      <div class="lane lane-r">
+        <p class="line" data-split="word" data-entrance="slide-r" data-delay="0">None of them talk.</p>
+      </div>
+      <div class="lane lane-l">
+        <p class="line" data-split="word" data-entrance="slide-l" data-delay="0.4">So you become the glue.</p>
+      </div>
     </div>
 
-    <div class="band band-top" data-band="0.52,0.74" id="b3">
+    <div class="band band-mid" data-band="0.52,0.74" id="b3">
       <p class="line" data-split="char" data-entrance="converge">Physiqly runs all of it in one place.</p>
     </div>
 
@@ -727,9 +785,13 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
       </div>
     </div>
 
+    <!-- loading="lazy" never fired here: the wrapper sits at opacity 0 until the
+         settle, and the image stayed unfetched, so the phone arrived empty.
+         It is 46KB, so it loads normally at low priority instead, behind the
+         poster and the video blob. -->
     <div class="hero-phone-reveal" id="hero-phone-reveal" aria-hidden="true">
       <div class="phone">
-        <img src="assets/shots/digest.webp" alt="" loading="lazy" decoding="async">
+        <img src="assets/shots/digest.webp" alt="" width="560" height="1214" fetchpriority="low" decoding="async">
       </div>
     </div>
 
@@ -1085,11 +1147,21 @@ function splitLine(el, mode, entrance, seed){
     var w = document.createElement('span'); w.className = 'w';
     if (mode === 'word'){
       w.textContent = word;
+      /* data-delay holds a line back so the beat arrives in parts: the first
+         line lands, then the answering line on the other side follows. */
+      var base = Number(el.dataset.delay) || 0;
       if (entrance === 'punch'){
-        w.style.setProperty('--th', (wi/words.length*0.42).toFixed(3));
+        w.style.setProperty('--th', (base + wi/words.length*0.42).toFixed(3));
         if (el.dataset.em !== undefined && Number(el.dataset.em) === wi) w.classList.add('em');
       } else {
-        w.style.setProperty('--th', (wi/words.length*0.5).toFixed(3));
+        /* Each line owns a tight window starting at its delay, so a beat reads
+           as one line landing and then the next answering it, rather than the
+           two interleaving word by word. The ceiling keeps the last word's
+           threshold low enough to still reach full opacity by the end of the
+           band (the entrance multipliers need roughly 0.35 of headroom). */
+        var span = Math.min(0.42, Math.max(0.1, 0.6 - base));
+        var frac = words.length > 1 ? wi/(words.length - 1) : 0;
+        w.style.setProperty('--th', (base + frac*span).toFixed(3));
       }
     } else {
       for (var i=0;i<word.length;i++){
@@ -1262,16 +1334,23 @@ function failVideo(){
   stage.classList.add('video-failed');
 }
 
+/* A swap supersedes any load still in flight, so every await checks that it is
+   still the current one before touching the shared video element. */
+var loadGen = 0;
+
 async function loadHeroBlob(){
+  var gen = ++loadGen;
   var ctrl = new AbortController();
   var watchdog = setTimeout(function(){ ctrl.abort(); }, 20000);
   var res = await fetch(VIDEO_URL, { signal: ctrl.signal });
+  if (gen !== loadGen){ clearTimeout(watchdog); ctrl.abort(); return; }
   if (!res.ok) throw new Error('video http ' + res.status);
   var total = Number(res.headers.get('Content-Length')) || VIDEO_BYTES;
   var reader = res.body.getReader();
   var chunks = [], got = 0, lastRing = 0;
   for(;;){
     var r = await reader.read();
+    if (gen !== loadGen){ clearTimeout(watchdog); ctrl.abort(); return; }
     if (r.done) break;
     clearTimeout(watchdog);
     watchdog = setTimeout(function(){ ctrl.abort(); }, 20000);
@@ -1295,18 +1374,15 @@ async function loadHeroBlob(){
   }, { once:true });
 }
 
-function initHeroOnce(){
-  if (heroInit) return;
-  heroInit = true;
+function startHeroLoad(){
   poster.style.backgroundImage = "url('"+POSTER_URL+"')";
-  loadStart = performance.now();
-
   var started = false;
   function startBlobFetch(){
     if (started) return;
     started = true;
     loadHeroBlob().catch(failVideo);
   }
+  /* the poster wins the bandwidth race by design: paint it, then stream */
   var img = new Image();
   img.onload = startBlobFetch;
   img.onerror = startBlobFetch;
@@ -1314,22 +1390,46 @@ function initHeroOnce(){
   setTimeout(startBlobFetch, 4000);
 }
 
+function initHeroOnce(){
+  if (heroInit) return;
+  heroInit = true;
+  loadStart = performance.now();
+  startHeroLoad();
+}
+
+/* Crossing the portrait/landscape boundary mid-session swaps the cut. Keeping
+   the first one would cover-crop a portrait video into a wide stage (or the
+   reverse), which throws the composition away entirely. */
+function swapHeroSource(){
+  loadGen++;                                   /* orphan any load in flight */
+  stage.classList.remove('video-ready','video-failed');
+  if (video.src && video.src.indexOf('blob:') === 0) URL.revokeObjectURL(video.src);
+  video.removeAttribute('src');
+  video.load();
+  lastSeek = -1; seekBusy = false; pendingTime = null;
+  if (seekWatchdog){ clearTimeout(seekWatchdog); seekWatchdog = null; }
+  if (ring) ring.style.setProperty('--ld', 126);
+  startHeroLoad();
+}
+
 /* ============================================================
    THE GATES - live, both directions
    Three states: static (reduced motion / sideways phone), mobile scrub
-   (portrait), desktop scrub (everyone else). The video is chosen once, the
-   first time the scrub arms, and is not swapped on a later resize or
-   rotation: re-fetching a different blob mid-session is heavier than living
-   with the first cut scaled to fit.
+   (portrait), desktop scrub (everyone else). Each scrub state has its own cut
+   of the footage, composed for that shape, and crossing between them swaps
+   the source rather than cover-cropping the wrong one.
    ============================================================ */
-var scrubOn = false;
+var scrubOn = false, heroMode = null;
 var MOBILE_MQLS = MOBILE_GATES.map(function(q){ return matchMedia(q); });
 var STATIC_MQLS = STATIC_GATES.map(function(q){ return matchMedia(q); });
 
 function enableScrub(mode){
-  if (!heroInit){
+  if (heroMode !== mode){
     if (mode === 'mobile'){ VIDEO_URL = MOBILE_VIDEO; VIDEO_BYTES = MOBILE_BYTES; POSTER_URL = MOBILE_POSTER; }
     else { VIDEO_URL = DESKTOP_VIDEO; VIDEO_BYTES = DESKTOP_BYTES; POSTER_URL = DESKTOP_POSTER; }
+    var swap = heroMode !== null && heroInit;
+    heroMode = mode;
+    if (swap) swapHeroSource();
   }
   if (scrubOn) return;
   scrubOn = true;
@@ -1356,6 +1456,19 @@ STATIC_MQLS.concat(MOBILE_MQLS).forEach(function(m){
   if (m.addEventListener) m.addEventListener('change', applyHeroMode);
   else m.addListener(applyHeroMode);
 });
+/* Second path to the same function, on purpose. The media queries are the
+   correct signal, but if their change event is ever missed the hero is left
+   cover-cropping the wrong cut, which is the most visible failure on the page.
+   applyHeroMode is idempotent (enableScrub returns early when the mode has not
+   changed), so the debounce only has to stop a drag-resize across the boundary
+   from re-fetching on every intermediate pixel. */
+var modeSettle = null;
+function scheduleHeroMode(){
+  if (modeSettle) clearTimeout(modeSettle);
+  modeSettle = setTimeout(function(){ modeSettle = null; applyHeroMode(); }, 250);
+}
+window.addEventListener('resize', scheduleHeroMode, { passive:true });
+window.addEventListener('orientationchange', scheduleHeroMode, { passive:true });
 
 /* ============================================================
    ENTRANCES + THE SPINE + MARKERS
