@@ -665,7 +665,89 @@ h2{font-size:clamp(1.7rem,4.1vw,2.9rem)}
 @media (max-width:560px){.qa summary{padding-left:40px}.qa .ans{padding-left:40px}.qa .num{font-size:11px}}
 
 /* ============================================================
-   S8 - CTA + FORM
+   S8 - PRICING : the tier ladder
+   Prices mirror PLAN_TIERS in the app (src/lib/planTiers.ts).
+   If a price or client cap moves there, move it here too.
+   ============================================================ */
+.s-price .head{text-align:center;max-width:660px;margin:0 auto}
+.s-price .kicker{justify-content:center}
+.s-price .lede{margin-left:auto;margin-right:auto;text-align:center}
+
+.trial{
+  margin:46px auto 0;max-width:760px;text-align:center;
+  background:var(--panel);border:1px solid var(--hairline);border-radius:18px;padding:24px 26px;
+}
+.trial b{font-family:var(--font-display);font-weight:600;font-size:1.08rem;letter-spacing:-.01em}
+.trial p{margin-top:8px;color:var(--text-secondary);font-size:.95rem}
+
+.tiers{
+  --tier-gap:clamp(14px,1.7vw,20px);
+  /* Flex, not grid: five tiers never divide evenly into a row, and a grid
+     leaves the fifth dangling at the left edge. Flex centres the short row
+     while the width formula keeps every card identical. */
+  margin-top:34px;display:flex;flex-wrap:wrap;justify-content:center;gap:var(--tier-gap);
+}
+.tier{
+  flex:1 1 206px;
+  background:var(--panel);border:1px solid var(--hairline);border-radius:20px;
+  padding:24px 22px 26px;display:flex;flex-direction:column;
+  transition:border-color .5s var(--ease),transform .5s var(--ease-out),background .5s var(--ease);
+}
+.tier:hover{border-color:rgba(255,107,53,.4);transform:translateY(-5px);background:var(--panel-2)}
+/* Four to a row once there is room, so the fifth sits centred beneath them. */
+@media (min-width:940px){
+  .tier{flex:0 0 calc((100% - 3*var(--tier-gap)) / 4)}
+}
+.tier.featured{
+  border-color:rgba(255,107,53,.55);background:var(--panel-2);
+  box-shadow:0 18px 60px rgba(196,65,19,.16);
+}
+.tier-top{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:26px}
+.tier-name{font-family:var(--font-display);font-weight:600;font-size:1.05rem;letter-spacing:-.01em}
+.badge{
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--accent-muted);border:1px solid rgba(255,107,53,.4);border-radius:999px;padding:4px 10px;
+}
+.price{margin-top:15px;display:flex;align-items:baseline;gap:6px}
+.price .amt{
+  font-family:var(--font-display);font-weight:700;font-size:2.05rem;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums;
+}
+.price .per{color:var(--text-faint);font-size:14px}
+.tier .seats{margin-top:13px;font-size:15px;color:var(--text-primary)}
+.tier .each{
+  margin-top:4px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.06em;color:var(--text-faint);
+}
+/* The auto margin drops every button to its card's floor, so all four in the
+   top row line up even though Unlimited carries no per-client line. The rule
+   below keeps that button off the text above it. */
+.tier .btn{margin-top:auto;width:100%}
+.tier > :nth-last-child(2){margin-bottom:22px}
+
+.included{margin-top:clamp(46px,5vw,64px);max-width:900px;margin-left:auto;margin-right:auto}
+.included h3{
+  font-family:var(--font-mono);font-weight:500;font-size:12px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--text-faint);text-align:center;
+}
+.included ul{
+  margin:22px 0 0;padding:0;list-style:none;display:grid;gap:12px 40px;
+  grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+}
+.included li{position:relative;padding-left:28px;color:var(--text-secondary);font-size:.97rem}
+.included li::before{
+  content:"";position:absolute;left:3px;top:.34em;width:12px;height:7px;
+  border-left:1.8px solid var(--accent);border-bottom:1.8px solid var(--accent);
+  transform:rotate(-45deg);
+}
+.price-note{
+  margin:30px auto 0;max-width:66ch;text-align:center;
+  color:var(--text-faint);font-size:.92rem;
+}
+.price-note a{color:var(--accent-muted);text-decoration:none;border-bottom:1px solid rgba(255,179,143,.34)}
+.price-note a:hover{color:var(--accent-hover);border-bottom-color:var(--accent-hover)}
+
+/* ============================================================
+   S9 - CTA + FORM
    ============================================================ */
 .s-cta{position:relative;overflow:hidden;text-align:center;border-top:1px solid var(--hairline)}
 .s-cta .bgimg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.4}
@@ -748,6 +830,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <a class="nav-link hide-sm" href="#digest">Product</a>
     <a class="nav-link hide-sm" href="#libraries">Inside</a>
     <a class="nav-link hide-sm" href="#faq">Questions</a>
+    <a class="nav-link hide-sm" href="#pricing">Pricing</a>
     <a class="btn btn-primary btn-sm" href="#demo">Book a demo</a>
   </div>
 </nav>
@@ -1035,7 +1118,83 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     </div>
   </section>
 
-  <!-- ============ S8 : CTA ============ -->
+  <!-- ============ S8 : PRICING ============ -->
+  <section class="section s-price" id="pricing">
+    <div class="wrap rv">
+      <div class="head">
+        <p class="kicker part">What it costs</p>
+        <h2 class="part">Pay for the roster you actually coach.</h2>
+        <p class="lede part">One monthly subscription, priced by how many clients you are coaching. Every plan includes every feature — the only thing that changes is how many people you can bring on.</p>
+      </div>
+
+      <div class="part">
+        <div class="trial">
+          <b>Start free with your first client</b>
+          <p>No card, no trial clock. Coach one client free for as long as you like, and pick a plan when you are ready for a second.</p>
+        </div>
+
+        <div class="tiers">
+          <article class="tier">
+            <div class="tier-top"><p class="tier-name">Starter</p></div>
+            <p class="price"><span class="amt">$24.99</span><span class="per">/mo</span></p>
+            <p class="seats">Up to 5 clients</p>
+            <p class="each">about $5.00 per client</p>
+            <a class="btn btn-ghost" href="#demo">Book a demo</a>
+          </article>
+
+          <article class="tier">
+            <div class="tier-top"><p class="tier-name">Growth</p></div>
+            <p class="price"><span class="amt">$44.99</span><span class="per">/mo</span></p>
+            <p class="seats">Up to 10 clients</p>
+            <p class="each">about $4.50 per client</p>
+            <a class="btn btn-ghost" href="#demo">Book a demo</a>
+          </article>
+
+          <article class="tier featured">
+            <div class="tier-top">
+              <p class="tier-name">Pro</p>
+              <span class="badge">Most popular</span>
+            </div>
+            <p class="price"><span class="amt">$79.99</span><span class="per">/mo</span></p>
+            <p class="seats">Up to 20 clients</p>
+            <p class="each">about $4.00 per client</p>
+            <a class="btn btn-primary" href="#demo">Book a demo</a>
+          </article>
+
+          <article class="tier">
+            <div class="tier-top"><p class="tier-name">Business</p></div>
+            <p class="price"><span class="amt">$119.99</span><span class="per">/mo</span></p>
+            <p class="seats">Up to 35 clients</p>
+            <p class="each">about $3.43 per client</p>
+            <a class="btn btn-ghost" href="#demo">Book a demo</a>
+          </article>
+
+          <article class="tier">
+            <div class="tier-top"><p class="tier-name">Unlimited</p></div>
+            <p class="price"><span class="amt">$199.99</span><span class="per">/mo</span></p>
+            <p class="seats">Unlimited clients</p>
+            <a class="btn btn-ghost" href="#demo">Book a demo</a>
+          </article>
+        </div>
+
+        <div class="included">
+          <h3>In every plan</h3>
+          <ul>
+            <li>Training plans, exercise library and workout templates</li>
+            <li>Nutrition targets, meal plans and barcode logging</li>
+            <li>Structured client requests, form-check video review and chat</li>
+            <li>Progress tracking, streaks, personal records and weekly AI reports</li>
+            <li>A public marketplace listing and a leads inbox</li>
+            <li>Community groups, challenges and the Discover feed</li>
+          </ul>
+        </div>
+
+        <p class="price-note">Billed monthly in advance. Prices are in US dollars; your local price and tax are set by whichever store you subscribe through. Upgrades apply straight away and are charged pro rata, downgrades wait for your renewal, and cancelling never cuts off a client you already coach. <a href="refunds/">Refunds</a> within 14 days, no reason needed.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S9 : CTA ============ -->
   <section class="section s-cta" id="demo">
     <div class="bgimg" id="cta-bg" aria-hidden="true"></div>
     <div class="bgscrim" aria-hidden="true"></div>
@@ -1076,7 +1235,11 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
       <a href="#digest">Product</a>
       <a href="#libraries">Inside</a>
       <a href="#faq">Questions</a>
-      <a href="#demo">Book a demo</a>
+      <a href="#pricing">Pricing</a>
+      <a href="refunds/">Refunds</a>
+      <a href="privacy/">Privacy</a>
+      <a href="terms/">Terms</a>
+      <a href="support/">Support</a>
     </div>
   </div>
   <div class="foot-note">
@@ -1520,7 +1683,7 @@ else revealables.forEach(function(el){ el.classList.add('in','done'); });
 /* section markers ride the spine */
 var SECTIONS = [
   ['braid','01'],['ai-coach','02'],['digest','03'],['roster','04'],['plan','05'],
-  ['client','06'],['libraries','07'],['faq','08'],['demo','09']
+  ['client','06'],['libraries','07'],['faq','08'],['pricing','09'],['demo','10']
 ];
 var mainEl = document.getElementById('main');
 var markers = SECTIONS.map(function(s){
