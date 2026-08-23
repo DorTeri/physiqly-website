@@ -186,6 +186,17 @@ p{margin:0}
   font-size:clamp(1.9rem,5.4vw,4rem);line-height:1.08;letter-spacing:-.025em;
   max-width:19ch;margin:0 auto;
 }
+/* the hook: three short lines, left / right / centre, each entering from its
+   own side so the words echo the footage's two strands closing to one */
+.hook{max-width:30ch;margin:0 auto}
+.hook .line{max-width:none;margin:0}
+.hook .line-l{text-align:left}
+.hook .line-r{text-align:right;margin-top:.12em}
+.hook .line-c{text-align:center;margin-top:.55em}
+.hook .line{font-size:clamp(1.5rem,4.3vw,3.05rem)}
+.hook .line-c{font-size:clamp(1.7rem,4.9vw,3.4rem)}
+/* band 2, off to the side rather than dead centre */
+.band-top .line-side{text-align:right;margin:0 0 0 auto}
 /* The settle. The brand mark lives in the footage at frame centre, so the words
    sit below it rather than on top of it. */
 .band-settle{top:auto;bottom:7vh;text-align:center}
@@ -203,6 +214,23 @@ p{margin:0}
 }
 /* a shallow desktop window has no room under the mark for a two-line headline */
 @media (max-height:620px){.band-settle{bottom:4vh}.band-settle .line{font-size:1.5rem}}
+
+/* The settle's arrival: the real product screen fades in exactly where the
+   footage's own glow resolves into a phone shape. This is real DOM text, not
+   the model's approximation of small lettering, so it is always crisp. Reuses
+   the .phone frame styled for the lower sections. */
+.hero-phone-reveal{
+  position:absolute;left:50%;top:15vh;transform:translateX(-50%);
+  width:min(230px,24vw);pointer-events:none;z-index:2;opacity:0;
+  filter:drop-shadow(0 0 44px rgba(255,170,110,.32));
+}
+.hero-phone-reveal .phone{width:100%;max-width:none}
+@media (max-height:620px){.hero-phone-reveal{top:11vh;width:min(180px,20vw)}}
+@media (max-width:720px),
+       (orientation:portrait) and (max-width:1024px),
+       (orientation:portrait) and (pointer:coarse){
+  .hero-phone-reveal{top:12vh;width:min(230px,48vw)}
+}
 
 /* word / character split primitives */
 .w{display:inline-block;white-space:pre}
@@ -232,6 +260,22 @@ p{margin:0}
 .e-rise .w{
   --kc:clamp(0,(var(--k,0) - var(--th,0))*2.9,1);opacity:var(--kc);
   transform:translateY(calc((1 - var(--kc))*22px));
+}
+/* slide-l / slide-r - the line arrives whole from its own side, words trailing
+   in reading order; the entrance IS the side the line lives on */
+.e-slide-l .w{
+  --kc:clamp(0,(var(--k,0) - var(--th,0))*2.8,1);opacity:var(--kc);
+  transform:translateX(calc((1 - var(--kc))*-3em));
+}
+.e-slide-r .w{
+  --kc:clamp(0,(var(--k,0) - var(--th,0))*2.8,1);opacity:var(--kc);
+  transform:translateX(calc((1 - var(--kc))*3em));
+}
+/* converge - the two strands closing to one: characters left of centre arrive
+   from the left, characters right of centre arrive from the right */
+.e-converge .c{
+  --kc:clamp(0,(var(--k,0) - var(--th,0))*2.4,1);opacity:var(--kc);
+  transform:translateX(calc((1 - var(--kc))*var(--jx,0px)));
 }
 
 /* loading ring */
@@ -275,10 +319,10 @@ p{margin:0}
 .static-note{margin:16px auto 0;font-family:var(--font-mono);font-size:12px;
   letter-spacing:.04em;color:var(--text-faint);max-width:34ch}
 
-@media (max-width:720px),
-       (orientation:portrait) and (max-width:1024px),
-       (orientation:portrait) and (pointer:coarse),
-       (orientation:landscape) and (pointer:coarse) and (max-height:560px),
+/* Phones and tablets get their own portrait cut of the scrub (below), not the
+   static fallback. Only reduced motion and a phone held sideways (no room for
+   the journey) fall back to the composed still image. */
+@media (orientation:landscape) and (pointer:coarse) and (max-height:560px),
        (prefers-reduced-motion:reduce){
   .hero{display:none}
   .static-hero{display:flex}
@@ -659,23 +703,33 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <div class="scrim" aria-hidden="true"></div>
     <div class="scrim-top" aria-hidden="true"></div>
 
-    <div class="band band-top" data-band="0,0.22" data-entrance="scatter" id="b1">
-      <p class="line" data-split="char">Workouts here. Meals there. Progress in a spreadsheet.</p>
+    <div class="band band-top" data-band="0,0.22" id="b1">
+      <div class="hook">
+        <p class="line line-l" data-split="word" data-entrance="slide-l">Workouts here.</p>
+        <p class="line line-r" data-split="word" data-entrance="slide-r">Meals there.</p>
+        <p class="line line-c" data-split="char" data-entrance="converge">Progress in a spreadsheet.</p>
+      </div>
     </div>
 
-    <div class="band band-top" data-band="0.26,0.48" data-entrance="punch" id="b2">
-      <p class="line" data-split="word" data-em="0">Five tools to coach one person.</p>
+    <div class="band band-top" data-band="0.26,0.48" id="b2">
+      <p class="line line-side" data-split="word" data-entrance="slide-r">Five tools to coach one person.</p>
     </div>
 
-    <div class="band band-top" data-band="0.52,0.74" data-entrance="weave" id="b3">
-      <p class="line" data-split="char">Physiqly runs all of it in one place.</p>
+    <div class="band band-top" data-band="0.52,0.74" id="b3">
+      <p class="line" data-split="char" data-entrance="converge">Physiqly runs all of it in one place.</p>
     </div>
 
-    <div class="band band-settle" data-band="0.78,1" data-entrance="rise" id="b4">
-      <p class="line" data-split="word">Coach the person. Not the paperwork.</p>
+    <div class="band band-settle" data-band="0.78,1" data-entrance="rise" data-ramp="0.05" id="b4">
+      <p class="line" data-split="word" data-entrance="rise">Coach the person. Not the paperwork.</p>
       <div class="settle-cta">
         <a class="btn btn-primary" href="#demo">Book a demo</a>
         <a class="btn btn-ghost" href="#ai-coach">See it working</a>
+      </div>
+    </div>
+
+    <div class="hero-phone-reveal" id="hero-phone-reveal" aria-hidden="true">
+      <div class="phone">
+        <img src="assets/shots/digest.webp" alt="" loading="lazy" decoding="async">
       </div>
     </div>
 
@@ -971,16 +1025,28 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
 /* ============================================================
    CONSTANTS
    ============================================================ */
-var VIDEO_URL   = 'assets/hero-scrub.mp4';
-var VIDEO_BYTES = 3031104;                 /* real byte size, the Content-Length fallback */
-var POSTER_URL  = 'assets/hero-poster.jpg';
+/* Two cuts of the same footage: a 16:9 desktop version and a 9:16 version
+   composed for portrait, chosen once when the scrub first arms. Both are
+   trimmed to end the instant the phone shape has fully formed and glows, so
+   the video never has to render small legible text (AI video does not hold
+   fine lettering reliably, even with a locked end frame). The real screen is
+   real DOM text instead: see #hero-phone-reveal below. */
+var VIDEO_URL, VIDEO_BYTES, POSTER_URL;
+var DESKTOP_VIDEO = 'assets/hero-scrub.mp4', DESKTOP_BYTES = 3178489, DESKTOP_POSTER = 'assets/hero-poster.jpg';
+var MOBILE_VIDEO  = 'assets/hero-scrub-mobile.mp4', MOBILE_BYTES = 2877300, MOBILE_POSTER = 'assets/hero-poster-mobile.jpg';
 var ENDING_URL  = 'assets/hero-ending.jpg';
 var ATMOS_URL   = 'assets/hero-atmos.jpg';
 
-var GATES = [
+/* Phones and portrait tablets get the mobile-cut scrub, not the static
+   fallback. Only reduced motion and a phone held sideways (no room for the
+   journey) fall back to the composed still image. Every string here must
+   match the CSS media queries character-for-character. */
+var MOBILE_GATES = [
   '(max-width: 720px)',
   '(orientation: portrait) and (max-width: 1024px)',
-  '(orientation: portrait) and (pointer: coarse)',
+  '(orientation: portrait) and (pointer: coarse)'
+];
+var STATIC_GATES = [
   '(orientation: landscape) and (pointer: coarse) and (max-height: 560px)',
   '(prefers-reduced-motion: reduce)'
 ];
@@ -990,6 +1056,7 @@ var stage   = document.getElementById('stage');
 var video   = document.getElementById('hero-video');
 var poster  = document.getElementById('poster');
 var ring    = document.getElementById('ring');
+var phoneReveal = document.getElementById('hero-phone-reveal');
 
 var clamp = function(v,lo,hi){ return Math.min(hi, Math.max(lo, v)); };
 var smoothstep = function(p,e0,e1){ var t = clamp((p-e0)/(e1-e0),0,1); return t*t*(3-2*t); };
@@ -1027,7 +1094,13 @@ function splitLine(el, mode, entrance, seed){
     } else {
       for (var i=0;i<word.length;i++){
         var c = document.createElement('span'); c.className='c'; c.textContent = word[i];
-        if (entrance === 'weave'){
+        if (entrance === 'converge'){
+          /* the two strands closing to one: distance from centre sets both
+             the travel distance and a faint outside-in ripple */
+          var mid = (totalChars-1)/2, dist = ci - mid, side = dist < 0 ? -1 : 1;
+          c.style.setProperty('--th', (Math.abs(dist)/(mid||1)*0.14 + r()*0.04).toFixed(3));
+          c.style.setProperty('--jx', (side * (26 + Math.abs(dist)*3.2)).toFixed(1)+'px');
+        } else if (entrance === 'weave'){
           c.style.setProperty('--th', (ci/totalChars*0.46 + r()*0.05).toFixed(3));
           c.style.setProperty('--jy', ((ci%2 ? 1 : -1) * (16 + r()*16)).toFixed(1)+'px');
         } else { /* scatter */
@@ -1049,16 +1122,22 @@ function splitLine(el, mode, entrance, seed){
   el.appendChild(vis);
 }
 
-var ENTRANCE_CLASS = { scatter:'e-scatter', punch:'e-punch', weave:'e-weave', rise:'e-rise' };
+var ENTRANCE_CLASS = {
+  scatter:'e-scatter', punch:'e-punch', weave:'e-weave', rise:'e-rise',
+  'slide-l':'e-slide-l', 'slide-r':'e-slide-r', converge:'e-converge'
+};
 var bands = [].slice.call(document.querySelectorAll('.band')).map(function(el, i){
   var r = el.dataset.band.split(',').map(Number);
-  var entrance = el.dataset.entrance;
-  el.classList.add(ENTRANCE_CLASS[entrance]);
+  /* entrance is set per LINE (each line can enter from its own side); the
+     band-level attribute, when present, only flags the staged settle timing below */
   [].slice.call(el.querySelectorAll('[data-split]')).forEach(function(line, j){
-    splitLine(line, line.dataset.split, entrance, 1337 + i*97 + j*13);
+    var lineEntrance = line.dataset.entrance;
+    line.classList.add(ENTRANCE_CLASS[lineEntrance]);
+    splitLine(line, line.dataset.split, lineEntrance, 1337 + i*97 + j*13);
   });
-  return { el:el, a:r[0], b:r[1], entrance:entrance, op:-1, k:-1, ks:-1, kb:-1 };
+  return { el:el, a:r[0], b:r[1], entrance:el.dataset.entrance, ramp:Number(el.dataset.ramp) || 0, op:-1, k:-1, ks:-1, kb:-1 };
 });
+var phoneRevealOp = -1;
 
 /* ============================================================
    BAND DRIVE - delta-gated writes only
@@ -1075,7 +1154,7 @@ function updateCaptions(p){
 
     if (Math.abs(op - bd.op) > 0.004){ bd.op = op; bd.el.style.opacity = op.toFixed(3); }
 
-    var ramp = Math.min(0.025, (bd.b - bd.a)*0.35);
+    var ramp = bd.ramp || Math.min(0.025, (bd.b - bd.a)*0.35);
     var k = clamp((p - bd.a)/ramp, 0, 1);
     if (i === 0) k = Math.max(k, loadK);          /* one-time load ramp, band one only */
     if (Math.abs(k - bd.k) > 0.008){ bd.k = k; bd.el.style.setProperty('--k', k.toFixed(3)); }
@@ -1085,6 +1164,8 @@ function updateCaptions(p){
       var kb = clamp((k - 0.7)*3.2, 0, 1);
       if (Math.abs(ks - bd.ks) > 0.008){ bd.ks = ks; bd.el.style.setProperty('--ks', ks.toFixed(3)); }
       if (Math.abs(kb - bd.kb) > 0.008){ bd.kb = kb; bd.el.style.setProperty('--kb', kb.toFixed(3)); }
+      /* the real screen fades in on the same clock as the settle headline */
+      if (phoneReveal && Math.abs(k - phoneRevealOp) > 0.008){ phoneRevealOp = k; phoneReveal.style.opacity = k.toFixed(3); }
     }
   }
 }
@@ -1234,17 +1315,28 @@ function initHeroOnce(){
 }
 
 /* ============================================================
-   THE FIVE GATES - live, both directions
+   THE GATES - live, both directions
+   Three states: static (reduced motion / sideways phone), mobile scrub
+   (portrait), desktop scrub (everyone else). The video is chosen once, the
+   first time the scrub arms, and is not swapped on a later resize or
+   rotation: re-fetching a different blob mid-session is heavier than living
+   with the first cut scaled to fit.
    ============================================================ */
 var scrubOn = false;
-var MQLS = GATES.map(function(q){ return matchMedia(q); });
+var MOBILE_MQLS = MOBILE_GATES.map(function(q){ return matchMedia(q); });
+var STATIC_MQLS = STATIC_GATES.map(function(q){ return matchMedia(q); });
 
-function enableScrub(){
+function enableScrub(mode){
+  if (!heroInit){
+    if (mode === 'mobile'){ VIDEO_URL = MOBILE_VIDEO; VIDEO_BYTES = MOBILE_BYTES; POSTER_URL = MOBILE_POSTER; }
+    else { VIDEO_URL = DESKTOP_VIDEO; VIDEO_BYTES = DESKTOP_BYTES; POSTER_URL = DESKTOP_POSTER; }
+  }
   if (scrubOn) return;
   scrubOn = true;
   initHeroOnce();
   window.addEventListener('scroll', onScroll, { passive:true });
   bands.forEach(function(b){ b.op = -1; b.k = -1; b.ks = -1; b.kb = -1; });
+  phoneRevealOp = -1;
   unpinFinalStates();
   updateCaptions(heroProgress());
   onScroll();
@@ -1256,10 +1348,11 @@ function disableScrub(){
   if (rafId !== null){ cancelAnimationFrame(rafId); rafId = null; }
 }
 function applyHeroMode(){
-  if (MQLS.some(function(m){ return m.matches; })) disableScrub();
-  else enableScrub();
+  if (STATIC_MQLS.some(function(m){ return m.matches; })){ disableScrub(); return; }
+  if (MOBILE_MQLS.some(function(m){ return m.matches; })){ enableScrub('mobile'); return; }
+  enableScrub('desktop');
 }
-MQLS.forEach(function(m){
+STATIC_MQLS.concat(MOBILE_MQLS).forEach(function(m){
   if (m.addEventListener) m.addEventListener('change', applyHeroMode);
   else m.addListener(applyHeroMode);
 });
