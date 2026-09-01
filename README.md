@@ -1,6 +1,6 @@
 # Physiqly website
 
-A cinematic scroll-driven landing page for Physiqly, aimed at personal trainers. Plain HTML, CSS and vanilla JavaScript. No build step, no framework, no npm.
+A one-page site for Physiqly, aimed at personal trainers. Plain HTML, CSS and vanilla JavaScript. No build step, no framework, no npm.
 
 ## Layout
 
@@ -12,21 +12,47 @@ physiqly/            <- the deploy folder. Zip its CONTENTS, not the folder.
   refunds/index.html   legal, ported from the app's own copy
   support/index.html   contact and the four questions people actually ask
   assets/
-    hero-scrub.mp4   scroll-scrubbed hero, 6s, 1080p, keyframe every 8 frames
-    hero-poster.jpg  first frame, painted before the video streams in
-    hero-ending.jpg  last frame, reused as the static hero and CTA background
-    pages.css        the four subpages; index.html stays self-contained
+    hero.jpg           the hero photograph, 16:9, for landscape screens
+    hero-portrait.jpg  the vertical cut of the same frame, for phones
+    night-desk.jpg     the band opening the AI Coach section
+    coach-floor.jpg    the band opening the client-side section
+    gym-floor.jpg      the background behind the demo form
+    pages.css          the four subpages; index.html stays self-contained
     logo-full.webp
     logo-mark.webp
-    shots/           nine real app screenshots, captured from demo accounts
+    shots/             nine real app screenshots, captured from demo accounts
 review/              design package and inspection files. Never deployed.
+  new/               the generated photographs at full resolution
+  retired-video/     the old scroll-scrubbed hero and its stills
 ```
 
 ## How the hero works
 
-The hero is a 600vh pinned region containing a sticky full-viewport stage. Scroll progress through it maps 0 to 1 and drives the video's `currentTime`, so scrolling down plays the film forward and scrolling up plays it backward. The video is fetched as a Blob behind a progress ring, because many hosts lack HTTP Range support and seeking silently breaks without it.
+One photograph, no video. `hero.jpg` is a full-bleed `object-fit: cover` image
+with the headline in the calm left third; a three-layer gradient veil darkens
+only under the words and leaves the trainer and the orange phone glow at full
+strength.
 
-Five conditions serve a composed static image hero instead of the scrub: phones, portrait tablets, coarse-pointer portrait, landscape phones, and reduced motion. Those five media queries are written identically in the CSS and in the JavaScript, and they are re-evaluated live on rotation, resize and preference changes. Visitors on the static path never download the video or the poster.
+The shot is generated, and the Physiqly mark on the shirt is the real logo
+applied afterwards with image editing, not something the model invented. The
+only warm light in the frame comes off the phone, so the brand orange and the
+product are the same thing.
+
+Under 860px, and on any portrait screen up to 1024px, `<picture>` swaps in
+`hero-portrait.jpg` and the layout changes shape: the photograph takes the top
+of the screen and the words sit on the canvas beneath it. They used to be
+overlaid there too, but the vertical cut puts the phone glow and the mark on
+the shirt exactly where a headline block lands at 375px, which measured
+2.44:1 on the kicker. A gradient deep enough to fix that buried the mark as
+well, so the two were separated instead.
+
+Worst-pixel contrast under every hero line, with the veil applied and the text
+shadow ignored: 9.3:1 on the kicker, 7.05:1 on the headline, 5.23:1 on the
+subline, 5.96:1 on the note, measured at 1440 wide.
+
+The old scroll-scrubbed video hero, its two cuts and its posters are in
+`review/retired-video/`. Nothing on the page fetches a video any more, and the
+whole `assets/` folder is now under 1 MB.
 
 ## The subpages
 
@@ -53,13 +79,12 @@ is not, because it has no language switcher.
 
 Open `physiqly/index.html`. Everything is in that one file: tokens at the top of the `<style>` block, then sections in page order, then the script.
 
-To preview the full scroll experience you need a local server, because browsers block `fetch` on `file://` URLs:
+Double-clicking `index.html` works, since nothing on the page is fetched by
+JavaScript any more. A local server is still the honest preview:
 
 ```bash
-npx http-server physiqly -p 8080 -c-1
+npx http-server physiqly -p 8085 -c-1
 ```
-
-Double-clicking `index.html` shows the static-image hero instead. That is the designed fallback, not a bug.
 
 ## Screenshots
 

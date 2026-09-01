@@ -165,9 +165,11 @@ p{margin:0}
   font-size:clamp(1.02rem,1.4vw,1.15rem);max-width:36ch;
 }
 .hero-cta{margin-top:34px;display:flex;gap:13px;flex-wrap:wrap}
+/* --text-faint measured 4.08:1 against the brightest pixel it can sit over at
+   1440 wide, which is under the 4.5 floor for text this small. */
 .hero-note{
   margin-top:20px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.07em;
-  color:var(--text-faint);
+  color:var(--text-secondary);
 }
 .hero-scroll{
   position:absolute;left:50%;bottom:24px;transform:translateX(-50%);
@@ -767,7 +769,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <figure class="band-photo rv">
       <img src="assets/night-desk.jpg" alt="A phone lying face up on a kitchen table late at night, its screen the only light in the room"
            width="1600" height="900" loading="lazy" decoding="async">
-      <figcaption>23:14. A client asks what to swap the incline press for.</figcaption>
+      <figcaption class="part">23:14. A client asks what to swap the incline press for.</figcaption>
     </figure>
     <div class="wrap inner">
       <div class="rv ai-phone">
@@ -863,7 +865,7 @@ body.paused *,body.paused *::before,body.paused *::after{animation-play-state:pa
     <figure class="band-photo rv">
       <img src="assets/coach-floor.jpg" alt="A trainer standing on a dark gym floor at dawn, reading her phone"
            width="1600" height="893" loading="lazy" decoding="async">
-      <figcaption>The session is waiting before anybody has to ask for it.</figcaption>
+      <figcaption class="part">The session is waiting before anybody has to ask for it.</figcaption>
     </figure>
     <div class="wrap inner">
       <div class="rv">
