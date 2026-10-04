@@ -29,3 +29,8 @@ Thumbs.db
 #   review/mark.png                     the brand mark source used to build it
 #   review/hero-raw.mp4                 the braid hero's raw generation (54 credits)
 #   review/start-frame.png              the braid hero's start frame (2 credits)
+
+# 2026-10 product shots / new homepage review: keep the lossless PNG masters
+# and full-page review captures local (large); the WebP/AVIF versions are tracked.
+review/new-home/_review/
+review/product-shots-2026-10/**/*.png

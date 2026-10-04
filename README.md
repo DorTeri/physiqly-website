@@ -2,6 +2,15 @@
 
 A one-page site for Physiqly, aimed at personal trainers. Plain HTML, CSS and vanilla JavaScript. No build step, no framework, no npm.
 
+## 2026-10 homepage (Early Coach Program, real product shots)
+
+`physiqly/index.html` is the redesigned homepage served at **https://www.physiqly.online/** (the apex `physiqly.online` 308s to `www` in Vercel; canonical and OG URLs use `www`). The app lives separately at `https://www.physiqly.fit`.
+
+- Every product visual is a real app screenshot (`review/product-shots-2026-10/`), framed; web versions are `physiqly/assets/product/*.{avif,webp}` (AVIF → WebP `<picture>`, phone-shaped crops under 760px, only the hero preloaded).
+- No public price list: the Early Coach Program section replaces the tier table (owner decision 2026-10-04). The app's `/pricing` says the same.
+- "Book a demo" posts to `https://www.physiqly.fit/api/demo-requests` (Turnstile + per-IP rate limit, lead in the admin pipeline with `source: "marketing-site"`). The app allowlists `https://physiqly.online` and `https://www.physiqly.online`; the Turnstile widget must list the hostname in Cloudflare.
+- Review build, captures and ship notes: `review/new-home/`.
+
 ## Layout
 
 ```
